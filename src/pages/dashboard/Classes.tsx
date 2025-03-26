@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Plus, Calendar, Users, Clock, Link as LinkIcon, Copy, Check, UserPlus, QrCode, ExternalLink } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Plus, Clock, Link as LinkIcon, Copy, Check, UserPlus, QrCode, ExternalLink } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import toast from 'react-hot-toast';
 import { format } from 'date-fns';
@@ -191,15 +191,6 @@ export default function Classes() {
     }
   };
 
-  const copyAttendanceLink = async (studentId: string) => {
-    try {
-      const attendanceLink = `${window.location.origin}/student-attendance?id=${studentId}`;
-      await navigator.clipboard.writeText(attendanceLink);
-      toast.success('Attendance report link copied to clipboard');
-    } catch (error) {
-      toast.error('Failed to copy attendance link');
-    }
-  };
 
   const createClass = async () => {
     if (!user) return;
@@ -243,6 +234,27 @@ export default function Classes() {
     } catch (error: any) {
       toast.error('Failed to create class');
       console.error('Error creating class:', error);
+    }
+  };
+
+  const deleteClass = async () => {
+    if (!selectedClass) return;
+
+    try {
+      const { error: deleteError } = await supabase
+        .from('classes')
+        .delete()
+        .eq('id', selectedClass);
+
+      if (deleteError) throw deleteError;
+
+      setClasses(prev => prev.filter(cls => cls.id !== selectedClass));
+      setSelectedClass(null);
+      toast.success('Class deleted successfully');
+    }
+    catch (error: any) {
+      toast.error('Failed to delete class');
+      console.error('Error deleting class:', error);
     }
   };
 
@@ -596,6 +608,11 @@ export default function Classes() {
                     >
                       <Clock className="h-4 w-4 mr-2" />
                       Add Time Slot
+                    </button>
+                    <button
+                    onClick={deleteClass}
+                    className='w-full inline-flex justify-center items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'>
+                      Delete Class
                     </button>
                   </div>
                 </div>

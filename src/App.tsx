@@ -8,6 +8,7 @@ import JoinClass from './pages/JoinClass';
 import SubmitAttendance from './pages/SubmitAttendance';
 import StudentAttendance from './pages/StudentAttendance';
 import PrivateRoute from './components/PrivateRoute';
+import ClassStudents from './pages/ClassStudentList';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/join/:inviteCode" element={<JoinClass />} />
+          <Route path="/classes/:classId" element={<ClassStudents/>} />
           <Route path="/attendance" element={<SubmitAttendance />} />
           <Route path="/student-attendance" element={<StudentAttendance />} />
           <Route path="/dashboard/*" element={
