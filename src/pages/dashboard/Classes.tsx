@@ -569,51 +569,64 @@ export default function Classes() {
                 </div>
 
                 {/* Add Time Slot Form */}
-                <div className="border-t pt-4">
-                  <h4 className="text-sm font-medium text-gray-900">Add Time Slot</h4>
-                  <div className="mt-2 space-y-3">
+                <div className="border-t border-gray-200 pt-6 space-y-5">
+                  <h4 className="text-lg font-semibold text-gray-800">Add Time Slot</h4>
+                  <div className="space-y-4">
                     <select
                       value={newTimeSlot.day_of_week}
                       onChange={(e) => setNewTimeSlot(prev => ({ ...prev, day_of_week: parseInt(e.target.value) }))}
-                      className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 ease-in-out"
                     >
                       {DAYS_OF_WEEK.map((day, index) => (
                         <option key={day} value={index}>{day}</option>
                       ))}
                     </select>
-                    <div className="grid grid-cols-2 gap-2">
-                      <input
-                        type="time"
-                        value={newTimeSlot.start_time}
-                        onChange={(e) => setNewTimeSlot(prev => ({ ...prev, start_time: e.target.value }))}
-                        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                      />
-                      <input
-                        type="time"
-                        value={newTimeSlot.end_time}
-                        onChange={(e) => setNewTimeSlot(prev => ({ ...prev, end_time: e.target.value }))}
-                        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                      />
+                    
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-1">
+                        <label className="block text-sm font-medium text-gray-700">Start Time</label>
+                        <input
+                          type="time"
+                          value={newTimeSlot.start_time}
+                          onChange={(e) => setNewTimeSlot(prev => ({ ...prev, start_time: e.target.value }))}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 ease-in-out"
+                        />
+                      </div>
+                      <div className="space-y-1">
+                        <label className="block text-sm font-medium text-gray-700">End Time</label>
+                        <input
+                          type="time"
+                          value={newTimeSlot.end_time}
+                          onChange={(e) => setNewTimeSlot(prev => ({ ...prev, end_time: e.target.value }))}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 ease-in-out"
+                        />
+                      </div>
                     </div>
+                    
                     <input
                       type="text"
                       placeholder="Room number (optional)"
                       value={newTimeSlot.room_number}
                       onChange={(e) => setNewTimeSlot(prev => ({ ...prev, room_number: e.target.value }))}
-                      className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 ease-in-out"
                     />
-                    <button
-                      onClick={addTimeSlot}
-                      className="w-full inline-flex justify-center items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                    >
-                      <Clock className="h-4 w-4 mr-2" />
-                      Add Time Slot
-                    </button>
-                    <button
-                    onClick={deleteClass}
-                    className='w-full inline-flex justify-center items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'>
-                      Delete Class
-                    </button>
+                    
+                    <div className="space-y-3">
+                      <button
+                        onClick={addTimeSlot}
+                        className="w-full flex justify-center items-center px-4 py-2.5 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200 ease-in-out"
+                      >
+                        <Clock className="h-5 w-5 mr-2" />
+                        Add Time Slot
+                      </button>
+                      
+                      <button
+                        onClick={deleteClass}
+                        className="w-full flex justify-center items-center px-4 py-2.5 bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200 ease-in-out"
+                      >
+                        Delete Class
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -624,197 +637,220 @@ export default function Classes() {
 
       {/* Add Student Modal */}
       {isAddStudentModalOpen && (
-        <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center p-4">
-          <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
-            <h3 className="text-lg font-medium text-gray-900 mb-4">Add Student</h3>
-            <div className="space-y-4">
-              <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-                  Full Name
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  value={newStudent.name}
-                  onChange={(e) => setNewStudent(prev => ({ ...prev, name: e.target.value }))}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                />
-              </div>
-              <div>
-                <label htmlFor="studentId" className="block text-sm font-medium text-gray-700">
-                  Student ID
-                </label>
-                <input
-                  type="text"
-                  id="studentId"
-                  value={newStudent.studentId}
-                  onChange={(e) => setNewStudent(prev => ({ ...prev, studentId: e.target.value }))}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                />
-              </div>
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  value={newStudent.email}
-                  onChange={(e) => setNewStudent(prev => ({ ...prev, email: e.target.value }))}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                />
-              </div>
-              <div>
-                <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
-                  Phone
-                </label>
-                <input
-                  type="tel"
-                  id="phone"
-                  value={newStudent.phone}
-                  onChange={(e) => setNewStudent(prev => ({ ...prev, phone: e.target.value }))}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                />
-              </div>
+        <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
+        <div 
+          className="bg-white rounded-xl shadow-2xl max-w-md w-full p-8 space-y-6 
+          transform transition-all duration-300 ease-in-out scale-100 hover:shadow-3xl"
+        >
+          <h3 className="text-2xl font-bold text-gray-900 border-b pb-3 border-gray-200">
+            Add Student
+          </h3>
+          
+          <div className="space-y-5">
+            <div className="space-y-1.5">
+              <label 
+                htmlFor="name" 
+                className="block text-sm font-medium text-gray-700"
+              >
+                Full Name
+              </label>
+              <input
+                type="text"
+                id="name"
+                value={newStudent.name}
+                onChange={(e) => setNewStudent(prev => ({ ...prev, name: e.target.value }))}
+                className="w-full px-3 py-2.5 border border-gray-300 rounded-md 
+                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 
+                transition-all duration-200 ease-in-out"
+                placeholder="Enter full name"
+              />
             </div>
-            <div className="mt-6 flex justify-end space-x-3">
-              <button
-                onClick={() => {
-                  setIsAddStudentModalOpen(false);
-                  setNewStudent({
-                    name: '',
-                    studentId: '',
-                    email: '',
-                    phone: '',
-                  });
-                }}
-                className="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
+      
+            <div className="space-y-1.5">
+              <label 
+                htmlFor="studentId" 
+                className="block text-sm font-medium text-gray-700"
               >
-                Cancel
-              </button>
-              <button
-                onClick={addStudent}
-                className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700"
+                Student ID
+              </label>
+              <input
+                type="text"
+                id="studentId"
+                value={newStudent.studentId}
+                onChange={(e) => setNewStudent(prev => ({ ...prev, studentId: e.target.value }))}
+                className="w-full px-3 py-2.5 border border-gray-300 rounded-md 
+                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 
+                transition-all duration-200 ease-in-out"
+                placeholder="Enter student ID"
+              />
+            </div>
+      
+            <div className="space-y-1.5">
+              <label 
+                htmlFor="email" 
+                className="block text-sm font-medium text-gray-700"
               >
-                Add Student
-              </button>
+                Email
+              </label>
+              <input
+                type="email"
+                id="email"
+                value={newStudent.email}
+                onChange={(e) => setNewStudent(prev => ({ ...prev, email: e.target.value }))}
+                className="w-full px-3 py-2.5 border border-gray-300 rounded-md 
+                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 
+                transition-all duration-200 ease-in-out"
+                placeholder="Enter email address"
+              />
+            </div>
+      
+            <div className="space-y-1.5">
+              <label 
+                htmlFor="phone" 
+                className="block text-sm font-medium text-gray-700"
+              >
+                Phone
+              </label>
+              <input
+                type="tel"
+                id="phone"
+                value={newStudent.phone}
+                onChange={(e) => setNewStudent(prev => ({ ...prev, phone: e.target.value }))}
+                className="w-full px-3 py-2.5 border border-gray-300 rounded-md 
+                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 
+                transition-all duration-200 ease-in-out"
+                placeholder="Enter phone number"
+              />
             </div>
           </div>
+      
+          <div className="flex justify-end space-x-3 pt-4 border-t border-gray-200">
+            <button
+              onClick={() => {
+                setIsAddStudentModalOpen(false);
+                setNewStudent({
+                  name: '',
+                  studentId: '',
+                  email: '',
+                  phone: '',
+                });
+              }}
+              className="px-4 py-2.5 border border-gray-300 rounded-md text-sm font-medium 
+              text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 
+              focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={addStudent}
+              className="px-4 py-2.5 border border-transparent rounded-md text-sm font-medium 
+              text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none 
+              focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 
+              transition-all duration-200 ease-in-out"
+            >
+              Add Student
+            </button>
+          </div>
         </div>
+      </div>
       )}
 
       {/* Create Class Modal */}
       {isCreateModalOpen && (
-        <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center p-4">
-          <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
-            <h3 className="text-lg font-medium text-gray-900">Create New Class</h3>
-            <div className="mt-4 space-y-4">
-              <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-                  Class Name
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  value={newClass.name}
-                  onChange={(e) => setNewClass(prev => ({ ...prev, name: e.target.value }))}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                />
-              </div>
-              <div>
-                <label htmlFor="description" className="block text-sm font-medium text-gray-700">
-                  Description
-                </label>
-                <textarea
-                  id="description"
-                  rows={3}
-                  value={newClass.description}
-                  onChange={(e) => setNewClass(prev => ({ ...prev, description: e.target.value }))}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                />
-              </div>
-              <div>
-                <label htmlFor="max_students" className="block text-sm font-medium text-gray-700">
-                  Maximum Students
-                </label>
-                <input
-                  type="number"
-                  id="max_students"
-                  value={newClass.max_students}
-                  onChange={(e) => setNewClass(prev => ({ ...prev, max_students: parseInt(e.target.value) }))}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                />
-              </div>
-              <div>
-                <label htmlFor="day_of_week" className="block text-sm font-medium text-gray-700">
-                  Initial Class Schedule
-                </label>
-                <div className="mt-2 space-y-3">
-                  <select
-                    id="day_of_week"
-                    value={newClass.day_of_week}
-                    onChange={(e) => setNewClass(prev => ({ ...prev, day_of_week: parseInt(e.target.value) }))}
-                    className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                  >
-                    {DAYS_OF_WEEK.map((day, index) => (
-                      <option key={day} value={index}>{day}</option>
-                    ))}
-                  </select>
-                  <div className="grid grid-cols-2 gap-2">
-                    <div>
-                      <label htmlFor="start_time" className="block text-xs font-medium text-gray-700">
-                        Start Time
-                      </label>
-                      <input
-                        type="time"
-                        id="start_time"
-                        value={newClass.start_time}
-                        onChange={(e) => setNewClass(prev => ({ ...prev, start_time: e.target.value }))}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                      />
-                    </div>
-                    <div>
-                      <label htmlFor="end_time" className="block text-xs font-medium text-gray-700">
-                        End Time
-                      </label>
-                      <input
-                        type="time"
-                        id="end_time"
-                        value={newClass.end_time}
-                        onChange={(e) => setNewClass(prev => ({ ...prev, end_time: e.target.value }))}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                      />
-                    </div>
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
+        <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6">
+          <h3 className="text-xl font-semibold text-gray-900 text-center">Create New Class</h3>
+          <div className="mt-4 space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Class Name</label>
+              <input
+                type="text"
+                value={newClass.name}
+                onChange={(e) => setNewClass(prev => ({ ...prev, name: e.target.value }))}
+                className="mt-1 w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm p-2"
+                placeholder="Enter class name"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Description</label>
+              <textarea
+                rows={3}
+                value={newClass.description}
+                onChange={(e) => setNewClass(prev => ({ ...prev, description: e.target.value }))}
+                className="mt-1 w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm p-2"
+                placeholder="Enter class description"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Maximum Students</label>
+              <input
+                type="number"
+                value={newClass.max_students}
+                onChange={(e) => setNewClass(prev => ({ ...prev, max_students: parseInt(e.target.value) }))}
+                className="mt-1 w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm p-2"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Initial Class Schedule</label>
+              <div className="mt-2 space-y-3">
+                <select
+                  value={newClass.day_of_week}
+                  onChange={(e) => setNewClass(prev => ({ ...prev, day_of_week: parseInt(e.target.value) }))}
+                  className="w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm p-2"
+                >
+                  {DAYS_OF_WEEK.map((day, index) => (
+                    <option key={day} value={index}>{day}</option>
+                  ))}
+                </select>
+                <div className="grid grid-cols-2 gap-2">
+                  <div>
+                    <label className="block text-xs font-medium text-gray-700">Start Time</label>
+                    <input
+                      type="time"
+                      value={newClass.start_time}
+                      onChange={(e) => setNewClass(prev => ({ ...prev, start_time: e.target.value }))}
+                      className="mt-1 w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm p-2"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-gray-700">End Time</label>
+                    <input
+                      type="time"
+                      value={newClass.end_time}
+                      onChange={(e) => setNewClass(prev => ({ ...prev, end_time: e.target.value }))}
+                      className="mt-1 w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm p-2"
+                    />
                   </div>
                 </div>
               </div>
             </div>
-            <div className="mt-6 flex justify-end space-x-3">
-              <button
-                onClick={() => {
-                  setIsCreateModalOpen(false);
-                  setNewClass({
-                    name: '',
-                    description: '',
-                    max_students: 50,
-                    day_of_week: 1,
-                    start_time: '09:00',
-                    end_time: '10:30',
-                  });
-                }}
-                className="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={createClass}
-                className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700"
-              >
-                Create Class
-              </button>
-            </div>
+          </div>
+          <div className="mt-6 flex justify-end space-x-3">
+            <button
+              onClick={() => {
+                setIsCreateModalOpen(false);
+                setNewClass({
+                  name: '',
+                  description: '',
+                  max_students: 50,
+                  day_of_week: 1,
+                  start_time: '09:00',
+                  end_time: '10:30',
+                });
+              }}
+              className="px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={createClass}
+              className="px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 transition"
+            >
+              Create Class
+            </button>
           </div>
         </div>
+      </div>
       )}
     </div>
   );

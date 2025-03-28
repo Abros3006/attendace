@@ -40,7 +40,7 @@ export default function SubmitAttendance() {
       const { data: student, error: studentError } = await supabase
         .from('students')
         .select('id')
-        .eq('student_id', studentId)
+        .eq('student_roll', studentId)
         .maybeSingle();
 
       if (studentError) throw studentError;
