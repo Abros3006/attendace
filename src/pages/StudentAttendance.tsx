@@ -114,7 +114,7 @@ export default function StudentAttendanceCard() {
         </div>
         <div className="text-center space-y-2 border-t pt-2">
           <Link to="/attendance" className="text-sm text-indigo-600 hover:text-indigo-500 flex items-center justify-center">
-            View your attendance report →
+            Mark your attendance →
           </Link>
         </div>
       </div>
