@@ -305,7 +305,7 @@ export default function Classes() {
       const { data: existingStudent, error: checkError } = await supabase
         .from('students')
         .select('id')
-        .or(`email.eq.${newStudent.email},student_id.eq.${newStudent.studentId}`)
+        .or(`email.eq.${newStudent.email},student_roll.eq.${newStudent.studentId}`)
         .maybeSingle();
 
       if (checkError) throw checkError;
@@ -328,7 +328,7 @@ export default function Classes() {
           .from('students')
           .insert({
             name: newStudent.name,
-            student_id: newStudent.studentId,
+            student_roll: newStudent.studentId,
             email: newStudent.email,
             phone: newStudent.phone,
           })
