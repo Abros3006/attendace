@@ -46,6 +46,7 @@ export default function JoinClass() {
 
       setClassDetails(data[0]);
     } catch (error: any) {
+      console.log(error);
       toast.error('Invalid or expired registration code');
       navigate('/');
     } finally {
