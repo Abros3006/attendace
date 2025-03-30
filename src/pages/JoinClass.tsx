@@ -8,9 +8,7 @@ interface ClassDetails {
   id: string;
   name: string;
   description: string;
-  faculty: {
-    name: string;
-  };
+  faculty_name: string; // Changed from nested faculty object to match DB response
 }
 
 export default function JoinClass() {
@@ -39,25 +37,14 @@ export default function JoinClass() {
 
     try {
       const { data, error } = await supabase
-        .from('classes')
-        .select(`
-          id,
-          name,
-          description,
-          faculty:faculty_profiles!inner (
-            name
-          )
-        `)
-        .eq('registration_code', inviteCode)
-        .eq('is_active', true)
-        .maybeSingle(); // Use maybeSingle instead of single to handle no results gracefully
+        .rpc('get_class_details_by_code', { invite_code: inviteCode });
 
       if (error) throw error;
-      if (!data) {
+      if (!data || data.length === 0) {
         throw new Error('Class not found or registration code is invalid');
       }
 
-      setClassDetails(data);
+      setClassDetails(data[0]);
     } catch (error: any) {
       toast.error('Invalid or expired registration code');
       navigate('/');
@@ -66,6 +53,7 @@ export default function JoinClass() {
     }
   };
 
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!classDetails) return;
@@ -73,15 +61,15 @@ export default function JoinClass() {
     setSubmitting(true);
     try {
       // Validate email format
-      if (!formData.email.toLowerCase().endsWith('.edu')) {
-        throw new Error('Please use your university email address (.edu)');
+      if (!formData.email.toLowerCase().endsWith('.edu.in')) {
+        throw new Error('Please use your university email address (.edu.in)');
       }
 
       // First check if student exists
       const { data: existingStudent, error: checkError } = await supabase
         .from('students')
         .select('id')
-        .or(`email.eq.${formData.email},student_id.eq.${formData.studentId}`)
+        .or(`email.eq.${formData.email},student_roll.eq.${formData.studentId}`)
         .maybeSingle();
 
       if (checkError) throw checkError;
@@ -106,7 +94,7 @@ export default function JoinClass() {
           .from('students')
           .insert({
             name: formData.fullName,
-            student_id: formData.studentId,
+            student_roll: formData.studentId,
             email: formData.email,
             phone: formData.phone,
           })
@@ -162,7 +150,7 @@ export default function JoinClass() {
           {classDetails && (
             <div className="mt-4 text-center">
               <h3 className="text-xl font-semibold text-gray-800">{classDetails.name}</h3>
-              <p className="mt-1 text-sm text-gray-600">by {classDetails.faculty.name}</p>
+              <p className="mt-1 text-sm text-gray-600">by {classDetails.faculty_name}</p>
               {classDetails.description && (
                 <p className="mt-2 text-sm text-gray-500">{classDetails.description}</p>
               )}
@@ -217,7 +205,7 @@ export default function JoinClass() {
                 value={formData.email}
                 onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
                 disabled={submitting}
-                placeholder="student@university.edu"
+                placeholder="student@university.edu.in"
               />
             </div>
 

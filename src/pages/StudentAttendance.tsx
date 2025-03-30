@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { supabase } from '../lib/supabase';
+import { Link } from 'react-router-dom';
 
 export default function StudentAttendanceCard() {
   const [studentRoll, setStudentRoll] = useState('');
@@ -9,11 +10,9 @@ export default function StudentAttendanceCard() {
   const [loading, setLoading] = useState(false);
 
   const fetchAttendance = async () => {
-    // Reset previous state
     setError(null);
     setAttendancePercentage(null);
     
-    // Validate inputs
     if (!studentRoll.trim() || !email.trim()) {
       setError('Please enter both Roll Number and Email');
       return;
@@ -22,7 +21,6 @@ export default function StudentAttendanceCard() {
     setLoading(true);
 
     try {
-      // Call the SQL function
       const { data, error } = await supabase.rpc('get_student_attendance_percentage', {
         input_roll_number: studentRoll,
         input_email: email
@@ -32,7 +30,6 @@ export default function StudentAttendanceCard() {
         throw error;
       }
 
-      // Check if data is returned and access the 'ap' value
       if (data && data.length > 0) {
         setAttendancePercentage(data[0].ap);
       } else {
@@ -54,30 +51,42 @@ export default function StudentAttendanceCard() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
-      <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-6">
-        <h2 className="text-2xl font-bold text-center mb-6">Student Attendance</h2>
-        
-        <div className="space-y-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-50 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-xl shadow-lg">
+        <div>
+          <div className="mx-auto h-16 w-16 flex items-center justify-center rounded-full bg-gradient-to-r from-blue-600 to-indigo-600">
+            <svg className="h-10 w-10 text-white" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7"></path></svg>
+          </div>
+          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+            Student Attendance
+          </h2>
+          <p className="mt-2 text-center text-sm text-gray-600">
+            Enter your roll number and email to check attendance
+          </p>
+        </div>
+
+        <div className="mt-8 space-y-2">
+          <label className="block text-sm font-medium text-gray-700">Roll Number</label>
           <input 
             type="text"
             placeholder="Enter Roll Number" 
             value={studentRoll}
             onChange={(e) => setStudentRoll(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           />
+          <label className="block text-sm font-medium text-gray-700">Email</label>
           <input 
             type="email"
             placeholder="Enter Email" 
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           />
           
           <button 
             onClick={fetchAttendance} 
             disabled={loading}
-            className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition-colors duration-300 disabled:opacity-50"
+            className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
           >
             {loading ? 'Fetching...' : 'Check Attendance'}
           </button>
@@ -102,6 +111,11 @@ export default function StudentAttendanceCard() {
               </p>
             </div>
           )}
+        </div>
+        <div className="text-center space-y-2 border-t pt-2">
+          <Link to="/attendance" className="text-sm text-indigo-600 hover:text-indigo-500 flex items-center justify-center">
+            View your attendance report →
+          </Link>
         </div>
       </div>
     </div>

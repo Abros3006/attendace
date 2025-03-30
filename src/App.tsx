@@ -15,7 +15,6 @@ function App() {
     <Router>
       <AuthProvider>
         <Routes>
-          <Route path="/check-attendance" element={<Login />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/join/:inviteCode" element={<JoinClass />} />
@@ -27,7 +26,7 @@ function App() {
               <Dashboard />
             </PrivateRoute>
           } />
-          <Route path="/" element={<Navigate to="/dashboard" replace />} />
+          <Route path="/" element={<Navigate to="/student-attendance" replace />} />
         </Routes>
         <Toaster 
           position="top-right"

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { QrCode } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import toast from 'react-hot-toast';
@@ -8,7 +8,6 @@ export default function SubmitAttendance() {
   const [code, setCode] = useState('');
   const [studentId, setStudentId] = useState('');
   const [submitting, setSubmitting] = useState(false);
-  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -165,12 +164,6 @@ export default function SubmitAttendance() {
         </form>
 
         <div className="text-center space-y-2">
-          <button
-            onClick={() => navigate('/join')}
-            className="text-sm text-indigo-600 hover:text-indigo-500"
-          >
-            Need to join a class?
-          </button>
           <div className="border-t pt-2">
             <Link
               to="/student-attendance"
