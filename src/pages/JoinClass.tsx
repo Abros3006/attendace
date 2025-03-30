@@ -36,6 +36,7 @@ export default function JoinClass() {
     }
 
     try {
+      console.log('Fetching class details for invite code:', inviteCode);
       const { data, error } = await supabase
         .rpc('get_class_details_by_code', { invite_code: inviteCode });
 
