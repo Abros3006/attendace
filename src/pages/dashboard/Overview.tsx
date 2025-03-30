@@ -46,52 +46,15 @@ export default function Overview() {
 
   const fetchDashboardStats = async () => {
     try {
-      // Get active classes count
-      const { data: activeClasses, error: classesError } = await supabase
-        .from('classes')
-        .select('id')
-        .eq('is_active', true);
-
-      if (classesError) throw classesError;
-
-      // Get total students count
-      const { count: totalStudents, error: studentsError } = await supabase
-        .from('class_students')
-        .select('*', { count: 'exact', head: true });
-
-      if (studentsError) throw studentsError;
-
-      // Get today's sessions
       const dayOfWeek = new Date().getDay();
-      const { data: todaySessions, error: sessionsError } = await supabase
-        .from('timetable_slots')
-        .select(`
-          id,
-          start_time,
-          end_time,
-          room_number,
-          classes (
-            id,
-            name
-          )
-        `)
-        .eq('day_of_week', dayOfWeek)
-        .order('start_time');
-
-      if (sessionsError) throw sessionsError;
-
-      setStats({
-        activeClasses: activeClasses?.length || 0,
-        totalStudents: totalStudents || 0,
-        todaySessions: todaySessions?.map(session => ({
-          id: session.id,
-          className: session.classes.name,
-          startTime: session.start_time,
-          endTime: session.end_time,
-          roomNumber: session.room_number,
-        })) || [],
-      });
-    } catch (error: any) {
+      
+      const { data, error } = await supabase
+        .rpc('get_dashboard_stats', { current_day: dayOfWeek });
+        
+      if (error) throw error;
+      
+      setStats(data as DashboardStats);
+    } catch (error) {
       toast.error('Failed to load dashboard statistics');
       console.error('Error loading dashboard stats:', error);
     } finally {
@@ -348,8 +311,20 @@ export default function Overview() {
                           {session.className}
                         </p>
                         <p className="text-sm text-gray-500">
-                          {format(new Date(`2000-01-01T${session.startTime}`), 'h:mm a')} -{' '}
-                          {format(new Date(`2000-01-01T${session.endTime}`), 'h:mm a')}
+                        {(() => {
+                          try {
+                            return format(new Date(`2000-01-01T${session.startTime}`), 'h:mm a');
+                          } catch (e) {
+                            return session.startTime;
+                          }
+                        })()} - {' '}
+                        {(() => {
+                          try {
+                            return format(new Date(`2000-01-01T${session.endTime}`), 'h:mm a');
+                          } catch (e) {
+                            return session.endTime;
+                          }
+                        })()}
                         </p>
                       </div>
                     </div>
