@@ -5,7 +5,6 @@ import toast from 'react-hot-toast';
 import { format } from 'date-fns';
 import { useAuth } from '../../contexts/AuthContext';
 
-// Keep all existing interface and type definitions
 interface Class {
   id: string;
   name: string;
